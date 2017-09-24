@@ -22,7 +22,7 @@ ArrayList* newArrayList()
 	ArrayList* arrayList = NULL;
 
 	arrayList = (ArrayList*)malloc(sizeof(ArrayList)*1000);
-    arrayList->list = NULL;
+        arrayList->list = NULL;
 	arrayList->isEmpty = ListEmpty;
 	arrayList->addArray = ListAdd;
 	arrayList->seach = ListSearch;
@@ -34,7 +34,7 @@ ArrayList* newArrayList()
 
 static bool ListEmpty(List *list)
 {
-   return list == NULL?1:0;
+   	return list == NULL?1:0;
 }
 static void ListAdd(void* element, List** list)
 {
@@ -50,11 +50,10 @@ static void ListDestroy(List **list)
 
 	while(listCpy != NULL)
 	{
-		/*guarda a referência da proximo objeto*/
 		List* listTemp = ((List*)listCpy->next);
-        free(listCpy);
-        listCpy = listTemp;
-        if(listTemp == NULL) *list = NULL;
+        	free(listCpy);
+        	listCpy = listTemp;
+        	if(listTemp == NULL) *list = NULL;
 	}
 
 }
@@ -69,7 +68,7 @@ static void* ListSearch(List* list,void* element, bool(*isEqual)(void* , void*))
 		  return temp->information;
 		}
 	}
-    return NULL;
+    	return NULL;
 }
 static unsigned getLength(List* list)
 {
