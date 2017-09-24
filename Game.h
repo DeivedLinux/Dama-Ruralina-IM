@@ -24,10 +24,12 @@ typedef struct Game
 {
 	SDL_Surface* background;
 	unsigned time;
-	bool(*Run)(struct Game*, Mode);
+	bool(*Run)(struct Game*, Mode, ObjPlay, ObjPlay);
 }*ObjGame;
 
-ObjGame newGame(const char* background, const char* iconPlayOne, const char* iconPlayTwo);
+extern SDL_Surface* screenSurface;
 
+ObjGame newGame(const char* _background, const char* _iconPlayOne, const char* _iconPlayTwo);
+ObjPlay newPlay(void);
 
 #endif
