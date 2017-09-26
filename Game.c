@@ -106,7 +106,7 @@ void initPlays(ObjPlay playOne, ObjPlay playTwo)
 
 		for(i = 0; i < 4; i++)
 		{
-			part = newPart(1+i*100, linesCounter*100,icons[index]);
+			part = newPart(i*100, linesCounter*100,icons[index]);
 			plays[index]->parts->addArray(part, &plays[index]->parts->list);
 		}
 		linesCounter += 1;

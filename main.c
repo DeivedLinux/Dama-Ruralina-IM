@@ -19,7 +19,6 @@ int main(int argc, char *argv[])
 	ObjPlay playTwo;
 
 
-
 	if(SDL_Init(SDL_INIT_VIDEO))
 	{
 		puts("falha ao iniciar sdl");
