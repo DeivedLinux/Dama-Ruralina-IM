@@ -42,15 +42,24 @@ int main(int argc, char *argv[])
 
 	IMG_Init(IMG_INIT_PNG);
 
-	game = newGame("C:\\Users/Robertinho do fv/Documents/UFRRJ\4° Periodo/Tópicos CCOMP/Dama-Ruralina-IM/Tabuleiro.png","PeaoOne.png","PeaoTwo.png");
+	game = newGame("Tabuleiro.png","PeaoOne.png","PeaoTwo.png");
     
     playOne = newPlay();
     playTwo = newPlay();
 
+    initPlay(playOne, playTwo);
+
     while(isRunning)
     {
     	isRunning = game->Run(game, mode, playOne, playTwo);
+    	SDL_UpdateWindowSurface(window);
+        SDL_Delay(10);
     }
 
+    SDL_FreeSurface(screenSurface);
+    SDL_DestroyWindow(window);
+    destroyGame(game, playOne, playTwo);
+    SDL_Quit();
+  
 	return 0;
 }

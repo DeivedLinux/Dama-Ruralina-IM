@@ -31,5 +31,7 @@ extern SDL_Surface* screenSurface;
 
 ObjGame newGame(const char* _background, const char* _iconPlayOne, const char* _iconPlayTwo);
 ObjPlay newPlay(void);
+void destroyGame(ObjGame game, ObjPlay playOne, ObjPlay playTwo);
+void initPlays(ObjPlay playOne, ObjPlay playTwo);
 
 #endif
