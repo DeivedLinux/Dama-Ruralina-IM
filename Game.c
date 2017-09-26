@@ -4,20 +4,21 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
+
 typedef struct Part
 {
 	SDL_Surface* icon;
 	SDL_Rect rect;
 }*ObjPart;
 
-static SDL_Surface* iconPlayOne = NULL; 
-static SDL_Surface* iconPlayTwo = NULL;
+static const SDL_Surface* iconPlayOne = NULL; 
+static const SDL_Surface* iconPlayTwo = NULL;
 SDL_Surface* screenSurface = NULL;
 
 static ObjPart newPart(int x, int y, SDL_Surface* icon);
 static bool RunGame(struct Game* game, Mode mode, ObjPlay playOne, ObjPlay playTwo);
 static bool movementIsValid(ObjPlay playOne, ObjPlay playTwo);
-
+static void updateSurface(ObjPlay playOne, ObjPlay playTwo, struct Game* game);
 
 ObjGame newGame(const char* _background, const char* _iconPlayOne, const char* _iconPlayTwo)
 {
@@ -25,7 +26,7 @@ ObjGame newGame(const char* _background, const char* _iconPlayOne, const char* _
 
 	game = (ObjGame)malloc(sizeof(struct Game));
 
-	game->background = IMG_Load(_background);;
+	game->background = IMG_Load(_background);
 	game->time = 0;
 	game->Run = RunGame;
 	iconPlayOne = IMG_Load(_iconPlayOne);
@@ -66,11 +67,11 @@ static ObjPart newPart(int x, int y, SDL_Surface* icon)
 	part = (ObjPart)malloc(sizeof(struct Part));
 	part->rect.x = x;
 	part->rect.y = y;
-	part->rect.w = 100;
-	part->rect.h = 100;
+	part->rect.w = 100+part->rect.x;
+	part->rect.h = 100+part->rect.y;
 	part->icon = icon;
 
-	return icon;
+	return part;
 }
 
 void initPlays(ObjPlay playOne, ObjPlay playTwo)
@@ -78,7 +79,7 @@ void initPlays(ObjPlay playOne, ObjPlay playTwo)
 	unsigned i,index = 0;
 	ObjPart part;
 	unsigned linesCounter = 0;
-	ObjPart plays[2];
+	ObjPlay plays[2];
 	SDL_Surface* icons[2];
 
 	plays[0] = playOne;
@@ -88,11 +89,11 @@ void initPlays(ObjPlay playOne, ObjPlay playTwo)
 	icons[1] = iconPlayTwo;
 
 
-    while(linesCounter < 7)
+    while(linesCounter <= 7)
     {
-		for(i = 0; i < 4; i++)
+		for(i = 100; i < 800; i += 200)
 		{
-			part = newPart(1+i*100, linesCounter*100,icons[index]);
+			part = newPart(i, linesCounter*100,icons[index]);
 			plays[index]->parts->addArray(part, &plays[index]->parts->list);
 		}
 
@@ -104,12 +105,31 @@ void initPlays(ObjPlay playOne, ObjPlay playTwo)
 			index += 1;
 		}
 
-		for(i = 0; i < 4; i++)
+		for(i = 0; i < 800; i += 200)
 		{
-			part = newPart(i*100, linesCounter*100,icons[index]);
+			part = newPart(i, linesCounter*100,icons[index]);
 			plays[index]->parts->addArray(part, &plays[index]->parts->list);
 		}
 		linesCounter += 1;
+	}
+	
+}
+
+static void updateSurface(ObjPlay playOne, ObjPlay playTwo, struct Game* game)
+{
+	List* list;
+
+	for(list = playOne->parts->list; list != NULL; list = list->next)
+	{
+		SDL_BlitSurface((((ObjPart)(list->information))->icon), NULL,game->background, 
+			           &(((ObjPart)(list->information))->rect)); 
+
+	}
+    
+	for(list = playTwo->parts->list; list != NULL; list = list->next)
+	{
+		SDL_BlitSurface((((ObjPart)(list->information))->icon), NULL,game->background, 
+			           &(((ObjPart)(list->information))->rect)); 
 	}
 	
 }
@@ -118,9 +138,37 @@ static bool RunGame(struct Game* game, Mode mode, ObjPlay playOne, ObjPlay playT
 {
 	
 	SDL_Event event;
+	
+	while(SDL_PollEvent(&event) != 0 )
+    {
+        if(event.type == SDL_Quit)
+        {
+        
+        }
+        
+        switch(event.type)
+        {
+            case SDL_KEYDOWN:
+                
+                switch(event.key.keysym.sym)
+                {
+                    case SDLK_ESCAPE:
 
+                    return false;
+
+                    break;
+                    
+                    case SDLK_RETURN:
+                           
+                    break;
+                }
+            break;
+        }     
+    }
     
+    updateSurface(playOne, playTwo, game);
 	SDL_BlitSurface(game->background,NULL,screenSurface,NULL); 
+	
 
 	return true;
 }

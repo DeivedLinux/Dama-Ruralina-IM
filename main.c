@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     playOne = newPlay();
     playTwo = newPlay();
 
-    initPlay(playOne, playTwo);
+    initPlays(playOne, playTwo);
 
     while(isRunning)
     {
