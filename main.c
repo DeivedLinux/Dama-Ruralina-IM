@@ -42,27 +42,27 @@ int main(int argc, char *argv[])
 	IMG_Init(IMG_INIT_PNG);
 
 	game = newGame("Tabuleiro.png","PeaoOne.v1.png","PeaoTwo.v1.png");
-    loadSelectImg("PeaoOneSelect.v1.png", "PeaoTwoSelect.v1.png");
+    	loadSelectImg("PeaoOneSelect.v1.png", "PeaoTwoSelect.v1.png");
     
-    playOne = newPlay();
-    playTwo = newPlay();
+    	playOne = newPlay();
+    	playTwo = newPlay();
 
-    initPlays(playOne, playTwo);
+    	initPlays(playOne, playTwo);
 
-    while(isRunning)
-    {   
-    	start = SDL_GetTicks();
-    	isRunning = game->Run(game, mode, playOne, playTwo);
-    	SDL_UpdateWindowSurface(window);
+    	while(isRunning)
+    	{   
+    		start = SDL_GetTicks();
+    		isRunning = game->Run(game, mode, playOne, playTwo);
+    		SDL_UpdateWindowSurface(window);
 
-    	if((1000u/FPS) > (SDL_GetTicks() - start))
+    		if((1000u/FPS) > (SDL_GetTicks() - start))
         	SDL_Delay((1000u/FPS) - (SDL_GetTicks() - start));
-    }
+    	}
 
-    SDL_FreeSurface(screenSurface);
-    SDL_DestroyWindow(window);
-    destroyGame(game, playOne, playTwo);
-    SDL_Quit();
+    	SDL_FreeSurface(screenSurface);
+    	SDL_DestroyWindow(window);
+    	destroyGame(game, playOne, playTwo);
+    	SDL_Quit();
   
 	return 0;
 }
