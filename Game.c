@@ -4,6 +4,11 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
+typedef enum
+{
+	Peao,
+	Dama
+}PartType;
 
 typedef struct Part
 {
@@ -67,8 +72,8 @@ static ObjPart newPart(int x, int y, SDL_Surface* icon)
 	part = (ObjPart)malloc(sizeof(struct Part));
 	part->rect.x = x;
 	part->rect.y = y;
-	part->rect.w = 100+part->rect.x;
-	part->rect.h = 100+part->rect.y;
+	part->rect.w = 85+part->rect.x;
+	part->rect.h = 85+part->rect.y;
 	part->icon = icon;
 
 	return part;
@@ -88,12 +93,11 @@ void initPlays(ObjPlay playOne, ObjPlay playTwo)
 	icons[0] = iconPlayOne;
 	icons[1] = iconPlayTwo;
 
-
     while(linesCounter <= 7)
     {
-		for(i = 100; i < 800; i += 200)
+		for(i = 88; i < 800; i += 175)
 		{
-			part = newPart(i, linesCounter*100,icons[index]);
+			part = newPart(i, linesCounter*87.5f,icons[index]);
 			plays[index]->parts->addArray(part, &plays[index]->parts->list);
 		}
 
@@ -105,14 +109,13 @@ void initPlays(ObjPlay playOne, ObjPlay playTwo)
 			index += 1;
 		}
 
-		for(i = 0; i < 800; i += 200)
+		for(i = 0; i < 715; i += 175)
 		{
-			part = newPart(i, linesCounter*100,icons[index]);
+			part = newPart(i, linesCounter*87.5,icons[index]);
 			plays[index]->parts->addArray(part, &plays[index]->parts->list);
 		}
 		linesCounter += 1;
 	}
-	
 }
 
 static void updateSurface(ObjPlay playOne, ObjPlay playTwo, struct Game* game)
@@ -131,7 +134,6 @@ static void updateSurface(ObjPlay playOne, ObjPlay playTwo, struct Game* game)
 		SDL_BlitSurface((((ObjPart)(list->information))->icon), NULL,game->background, 
 			           &(((ObjPart)(list->information))->rect)); 
 	}
-	
 }
 
 static bool RunGame(struct Game* game, Mode mode, ObjPlay playOne, ObjPlay playTwo)
@@ -169,6 +171,5 @@ static bool RunGame(struct Game* game, Mode mode, ObjPlay playOne, ObjPlay playT
     updateSurface(playOne, playTwo, game);
 	SDL_BlitSurface(game->background,NULL,screenSurface,NULL); 
 	
-
 	return true;
 }

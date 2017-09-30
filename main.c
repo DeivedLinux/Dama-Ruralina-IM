@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
 
 	IMG_Init(IMG_INIT_PNG);
 
-	game = newGame("Tabuleiro.png","PeaoOne.png","PeaoTwo.png");
+	game = newGame("Tabuleiro.png","PeaoOne.v1.png","PeaoTwo.v1.png");
     
     playOne = newPlay();
     playTwo = newPlay();
