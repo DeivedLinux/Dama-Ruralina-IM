@@ -4,11 +4,14 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
+#define playParts(Obj) Obj->parts->list
+
+
 typedef enum
 {
 	Peao,
 	Dama
-}PartType;
+}TypePart;
 
 typedef struct Part
 {
@@ -18,12 +21,28 @@ typedef struct Part
 
 static const SDL_Surface* iconPlayOne = NULL; 
 static const SDL_Surface* iconPlayTwo = NULL;
-SDL_Surface* screenSurface = NULL;
+static const SDL_Surface* iconPlayOneSelect = NULL;
+static const SDL_Surface* iconPlayTwoSelect = NULL;
+const SDL_Surface* screenSurface = NULL;
+const unsigned FPS = 60;
 
 static ObjPart newPart(int x, int y, SDL_Surface* icon);
 static bool RunGame(struct Game* game, Mode mode, ObjPlay playOne, ObjPlay playTwo);
 static bool movementIsValid(ObjPlay playOne, ObjPlay playTwo);
 static void updateSurface(ObjPlay playOne, ObjPlay playTwo, struct Game* game);
+static bool compareTo(void* el, void* info);
+
+static bool compareTo(void* el, void* info)
+{
+	if((((SDL_Rect*)el)->x >= ((ObjPart)info)->rect.x) && 
+	   (((SDL_Rect*)el)->x-((ObjPart)info)->rect.w <= ((ObjPart)info)->rect.w) &&
+	   (((SDL_Rect*)el)->y >= ((ObjPart)info)->rect.y) &&
+	   (((SDL_Rect*)el)->y-((ObjPart)info)->rect.y <= ((ObjPart)info)->rect.h))
+	{
+		return true;
+	}
+	return false;
+}
 
 ObjGame newGame(const char* _background, const char* _iconPlayOne, const char* _iconPlayTwo)
 {
@@ -53,12 +72,19 @@ ObjPlay newPlay(void)
 	return play;
 }
 
+void loadSelectImg(const char* _iconPlayOneSelect, const char* _iconPlayTwoSelect)
+{
+	iconPlayOneSelect = IMG_Load(_iconPlayOneSelect);
+	iconPlayTwoSelect = IMG_Load(_iconPlayTwoSelect);
+}
 void destroyGame(ObjGame game, ObjPlay playOne, ObjPlay playTwo)
 {
 	SDL_FreeSurface(game->background);
 	free(game);
 	SDL_FreeSurface(iconPlayTwo);
 	SDL_FreeSurface(iconPlayOne);
+	SDL_FreeSurface(iconPlayOneSelect);
+	SDL_FreeSurface(iconPlayTwoSelect);
 	playTwo->parts->destroyList(&playTwo->parts->list);
 	playOne->parts->destroyList(&playOne->parts->list);
 	free(playOne);
@@ -140,6 +166,8 @@ static bool RunGame(struct Game* game, Mode mode, ObjPlay playOne, ObjPlay playT
 {
 	
 	SDL_Event event;
+	ObjPart partTemp;
+	SDL_Rect click = {0,0,0,0};
 	
 	while(SDL_PollEvent(&event) != 0 )
     {
@@ -156,18 +184,36 @@ static bool RunGame(struct Game* game, Mode mode, ObjPlay playOne, ObjPlay playT
                 {
                     case SDLK_ESCAPE:
 
-                    return false;
+                   	 	return false;
 
                     break;
-                    
-                    case SDLK_RETURN:
-                           
-                    break;
                 }
+
             break;
+
+            case SDL_MOUSEMOTION:
+
+            break;
+
+            case SDL_MOUSEBUTTONDOWN:
+
+            	click.x = event.button.x;
+            	click.y = event.button.y;
+            	click.h = 0;
+            	click.w = 0;
+
+            break;
+
         }     
     }
     
+    partTemp = playOne->parts->seach(playParts(playOne),(void*)&click,compareTo);
+
+    if(partTemp != NULL)
+    {
+    	partTemp->icon = iconPlayOneSelect;
+    }
+
     updateSurface(playOne, playTwo, game);
 	SDL_BlitSurface(game->background,NULL,screenSurface,NULL); 
 	

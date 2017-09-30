@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 	SDL_Window* window = NULL;
 	ObjPlay playOne;
 	ObjPlay playTwo;
-
+	unsigned long long start;
 
 	if(SDL_Init(SDL_INIT_VIDEO))
 	{
@@ -42,6 +42,7 @@ int main(int argc, char *argv[])
 	IMG_Init(IMG_INIT_PNG);
 
 	game = newGame("Tabuleiro.png","PeaoOne.v1.png","PeaoTwo.v1.png");
+    loadSelectImg("PeaoOneSelect.v1.png", "PeaoTwoSelect.v1.png");
     
     playOne = newPlay();
     playTwo = newPlay();
@@ -49,10 +50,13 @@ int main(int argc, char *argv[])
     initPlays(playOne, playTwo);
 
     while(isRunning)
-    {
+    {   
+    	start = SDL_GetTicks();
     	isRunning = game->Run(game, mode, playOne, playTwo);
     	SDL_UpdateWindowSurface(window);
-        SDL_Delay(10);
+
+    	if((1000u/FPS) > (SDL_GetTicks() - start))
+        	SDL_Delay((1000u/FPS) - (SDL_GetTicks() - start));
     }
 
     SDL_FreeSurface(screenSurface);

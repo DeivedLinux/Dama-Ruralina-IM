@@ -27,10 +27,12 @@ typedef struct Game
 	bool(*Run)(struct Game*, Mode, ObjPlay, ObjPlay);
 }*ObjGame;
 
-extern SDL_Surface* screenSurface;
+extern const SDL_Surface* screenSurface;
+extern const unsigned FPS;
 
 ObjGame newGame(const char* _background, const char* _iconPlayOne, const char* _iconPlayTwo);
 ObjPlay newPlay(void);
+void loadSelectImg(const char* _iconPlayOneSelect, const char* _iconPlayTwoSelect);
 void destroyGame(ObjGame game, ObjPlay playOne, ObjPlay playTwo);
 void initPlays(ObjPlay playOne, ObjPlay playTwo);
 
