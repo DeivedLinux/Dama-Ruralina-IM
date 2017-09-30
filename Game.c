@@ -169,53 +169,53 @@ static bool RunGame(struct Game* game, Mode mode, ObjPlay playOne, ObjPlay playT
 	ObjPart partTemp;
 	SDL_Rect click = {0,0,0,0};
 	
-	while(SDL_PollEvent(&event) != 0 )
-    {
-        if(event.type == SDL_Quit)
-        {
+    	while(SDL_PollEvent(&event) != 0 )
+    	{
+        	if(event.type == SDL_Quit)
+        	{
         
-        }
+        	}
         
-        switch(event.type)
-        {
-            case SDL_KEYDOWN:
+      		switch(event.type)
+        	{
+            		case SDL_KEYDOWN:
                 
-                switch(event.key.keysym.sym)
-                {
-                    case SDLK_ESCAPE:
+                		switch(event.key.keysym.sym)
+                		{
+                   		 	case SDLK_ESCAPE:
 
-                   	 	return false;
+                   	 		return false;
 
-                    break;
-                }
+                    			break;
+               	 		}
 
-            break;
+            			break;
 
-            case SDL_MOUSEMOTION:
+           		 case SDL_MOUSEMOTION:
 
-            break;
+            		 break;
 
-            case SDL_MOUSEBUTTONDOWN:
+            		case SDL_MOUSEBUTTONDOWN:
 
-            	click.x = event.button.x;
-            	click.y = event.button.y;
-            	click.h = 0;
-            	click.w = 0;
+            		click.x = event.button.x;
+            		click.y = event.button.y;
+            		click.h = 0;
+            		click.w = 0;
 
-            break;
+            		break;
 
-        }     
-    }
+        	}     
+    	}
     
-    partTemp = playOne->parts->seach(playParts(playOne),(void*)&click,compareTo);
+    	partTemp = playOne->parts->seach(playParts(playOne),(void*)&click,compareTo);
 
-    if(partTemp != NULL)
-    {
-    	partTemp->icon = iconPlayOneSelect;
-    }
+   	if(partTemp != NULL)
+    	{
+    		partTemp->icon = iconPlayOneSelect;
+    	}
 
-    updateSurface(playOne, playTwo, game);
-	SDL_BlitSurface(game->background,NULL,screenSurface,NULL); 
-	
-	return true;
+    	updateSurface(playOne, playTwo, game);
+    	SDL_BlitSurface(game->background,NULL,screenSurface,NULL); 
+    
+    	return true;
 }
