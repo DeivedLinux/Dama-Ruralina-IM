@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
     		SDL_UpdateWindowSurface(window);
 
     		if((1000u/FPS) > (SDL_GetTicks() - start))
-        	SDL_Delay((1000u/FPS) - (SDL_GetTicks() - start));
+        		SDL_Delay((1000u/FPS) - (SDL_GetTicks() - start));
     	}
 
     	SDL_FreeSurface(screenSurface);
